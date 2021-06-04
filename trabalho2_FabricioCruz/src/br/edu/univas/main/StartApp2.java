@@ -6,7 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
+import br.edu.univas.view.View;
 import br.edu.univas.vo.Lotofacil;
 import br.edu.univas.vo.Mega;
 import br.edu.univas.vo.Quina;
@@ -14,6 +16,14 @@ import br.edu.univas.vo.Quina;
 public class StartApp2 {
 	
 	public static void main(String[] args) {
+		StartApp2 myApp = new StartApp2();
+		myApp.run();
+	}
+	
+	private void run() {
+		
+		Scanner sc = new Scanner(System.in);
+		View vw = new View();
 		
 		String lotofacil = "resources\\lotofacil.csv";
 		String mega = "resources\\mega.csv";
@@ -27,8 +37,18 @@ public class StartApp2 {
 		
 		List<Quina> listaQuina = new ArrayList<>();
 		listaQuina = splitQuina(listaQuina, quina);
+		
+		int option;
+		do {
+			vw.mainMenu();
+			option = readInteger(sc);
+			validaOpcao(sc, vw, option);
+		}while(option != 9);
+		
+		sc.close();
+		
 	}
-	
+
 	private static List<Lotofacil> splitLotofacil(List<Lotofacil> listaLoto, String jogo) {
 		
 		BufferedReader br = null;
@@ -150,6 +170,21 @@ public class StartApp2 {
 			}
 		}
 		return listaQuina;
+	}
+	
+	private static int readInteger(Scanner sc) {
+		int num = sc.nextInt();
+		sc.nextLine();		
+		return num;
+	}
+	
+	private void validaOpcao(Scanner sc, View vw ,int option) {
+		if(option < 1 || (option > 3 && option != 9)) {
+			vw.valorInvalido();
+			vw.mainMenu();
+			option = readInteger(sc);
+		}
+		
 	}
 
 }
