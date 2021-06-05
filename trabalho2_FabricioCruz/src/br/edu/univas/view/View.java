@@ -22,4 +22,16 @@ public class View {
 		System.out.println("Por favor, digite um valor válido!\n");
 	}
 	
+	public void imprimeMega() {
+		System.out.println("::::MEGA-SENA::::");
+	}
+	
+	public void imprimeQuina() {
+		System.out.println("::::QUINA::::");
+	}
+	
+	public void imprimeLoto() {
+		System.out.println("::::LOTOFACIL::::");
+	}
+	
 }
