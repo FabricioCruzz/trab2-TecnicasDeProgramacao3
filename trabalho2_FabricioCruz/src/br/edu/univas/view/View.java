@@ -34,4 +34,11 @@ public class View {
 		System.out.println("::::LOTOFACIL::::");
 	}
 	
+	public void menuRandom() {
+		System.out.println("Para qual jogo deseja os números aleatórios?");
+		System.out.println("1. Mega-Sena\n"
+						+ "2. Quina\n"
+						+ "3. Lotofácil");
+	}
+	
 }

@@ -4,11 +4,17 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
+import java.util.Set;
 
 import br.edu.univas.view.View;
+import br.edu.univas.vo.CountNum;
 import br.edu.univas.vo.Lotofacil;
 import br.edu.univas.vo.Mega;
 import br.edu.univas.vo.Quina;
@@ -38,87 +44,133 @@ public class StartApp2 {
 		List<Lotofacil> listaLoto = new ArrayList<>();
 		listaLoto = splitLotofacil(listaLoto, lotofacil);
 		
-		List<String> ocorrMega = new ArrayList<>();
+		List<Integer> ocorrMega = new ArrayList<>();
 		
+		//Copia os dados dos jogos pra uma nova lista
 		for (int i = 0; i < listaMega.size(); i++) {
 			for (int j = 0; j < listaMega.get(i).getLista().size(); j++) {
-				ocorrMega.add(listaMega.get(i).getLista().get(j));
+				
+				String s = listaMega.get(i).getLista().get(j);
+				int num = Integer.parseInt(s);
+				ocorrMega.add(num);
+//				ocorrMega.add(listaMega.get(i).getLista().get(j));
 			}
 		}
 		
 //		TODO IMPLEMENTAR UM CONTADOR PARA CADA NUMERO E TBM COMO SALVAR O NUMERO COM O COUNTER DELE
+//		Verifica os números iguais
+//		TODO Resolver duplicados
+		List<CountNum> countNum = new ArrayList<>();
 		for(int i = 0; i < ocorrMega.size(); i++) {
+			CountNum cNum = new CountNum();
+			int count = 0;
+			cNum.setNum(ocorrMega.get(i));
 			for (int j = 0; j < ocorrMega.size(); j++) {
 				if(ocorrMega.get(i).equals(ocorrMega.get(j))) {
-					
+					count++;
 				}
 			}
+			cNum.setCount(count);
+			countNum.add(cNum);
 		}
 		
-		int option;
+		
+		int optionMenu;
+		int optionSubMenu;
 		do {
 			vw.mainMenu();
-			option = readInteger(sc);
-			validaOpcao(sc, vw, option);
+			optionMenu = readInteger(sc);
+			validaOpcao(sc, vw, optionMenu);
 			
-			if(option == 1) {
+			if(optionMenu == 1) {
 				vw.imprimeMega();
-				option = apresentaSubMenu(sc, option, vw);
+				optionSubMenu = apresentaSubMenu(sc, optionMenu, vw);
 				
-				direcionaFluxo(option);
+				direcionaFluxo(sc, vw, optionMenu, optionSubMenu);
 			}
-			else if(option == 2) {
+			else if(optionMenu == 2) {
 				vw.imprimeQuina();
-				option = apresentaSubMenu(sc, option, vw);
+				optionSubMenu = apresentaSubMenu(sc, optionMenu, vw);
 				
-				direcionaFluxo(option);
+				direcionaFluxo(sc, vw, optionMenu, optionSubMenu);
 			}
-			else if(option == 3) {
+			else if(optionMenu == 3) {
 				vw.imprimeLoto();
-				option = apresentaSubMenu(sc, option, vw);
+				optionSubMenu = apresentaSubMenu(sc, optionMenu, vw);
 				
-				direcionaFluxo(option);
+				direcionaFluxo(sc, vw, optionMenu, optionSubMenu);
 			}
 			
 			
-		}while(option != 9);
+		}while(optionMenu != 9);
 		
 		sc.close();
 		
 	}
 
-	private void direcionaFluxo(int option) {
-		if(option == 1) {
+	private void direcionaFluxo(Scanner sc, View vw, int optionMenu, int optionSubMenu) {
+		if(optionSubMenu == 1) {
 			
 		}
-		else if(option == 2) {
+		else if(optionSubMenu == 2) {
 			
 		}
-		else if(option == 3) {
+		else if(optionSubMenu == 3) {
 			
+			geraNumsAleatorios(optionMenu);
 		}
-		else if(option == 4) {
+		else if(optionSubMenu == 4) {
 			
 		}
 		
 	}
 
-	private int apresentaSubMenu(Scanner sc, int option, View vw) {
-		vw.subMenu();
-		option = readInteger(sc); 
-		option = validaOpcaoSubMenu(sc, option, vw);
-		return option;
+	private void geraNumsAleatorios(int optionMenu) {
+		Random ran = new Random();
+		DecimalFormat df = new DecimalFormat("00");
+		Set<Integer> numeros = new HashSet<>();
+		int num;
+		
+		if(optionMenu == 1) {
+			for (int i = 0; i < 6; i++) {
+				num = ran.nextInt(60);
+				numeros.add(num);
+				System.out.println(df.format(num));
+			}		
+		}
+		else if(optionMenu == 2) {
+			for (int i = 0; i < 15; i++) {
+				num = ran.nextInt(80);
+				numeros.add(num);
+				System.out.println(df.format(num));
+			}		
+		}
+		else {			
+			for (int i = 0; i < 20; i++) {
+				num = ran.nextInt(26);
+				numeros.add(num);
+				System.out.println(df.format(num));
+			}			
+		}
+		
 	}
 
-	private int validaOpcaoSubMenu(Scanner sc, int option, View vw) {
-		if(option < 1 || option > 4) {
-			while(option < 1 || option > 4) {
+	private int apresentaSubMenu(Scanner sc, int optionSubMenu, View vw) {
+		vw.subMenu();
+		optionSubMenu = readInteger(sc); 
+		optionSubMenu = validaOpcaoSubMenu(sc, optionSubMenu, vw);
+		return optionSubMenu;
+	}
+
+	private int validaOpcaoSubMenu(Scanner sc, int optionSubMenu, View vw) {
+		if(optionSubMenu < 1 || optionSubMenu > 4) {
+			while(optionSubMenu < 1 || optionSubMenu > 4) {
 				vw.valorInvalido();
 				vw.subMenu();
-				option = readInteger(sc);
+				optionSubMenu = readInteger(sc);
 			}
 		}
-		return option;
+		return optionSubMenu;
 	}
 
 	// TODO TENTAR RETORNAR List<Loteria> na assinatura da função e dentro trabalhar com o objeto que extende dessa classe. Talvez funcione!
@@ -267,11 +319,11 @@ public class StartApp2 {
 		return num;
 	}
 	
-	private void validaOpcao(Scanner sc, View vw ,int option) {
-		if(option < 1 || (option > 3 && option != 9)) {
+	private void validaOpcao(Scanner sc, View vw, int optionMenu) {
+		if(optionMenu < 1 || (optionMenu > 3 && optionMenu != 9)) {
 			vw.valorInvalido();
 			vw.mainMenu();
-			option = readInteger(sc);
+			optionMenu = readInteger(sc);
 		}
 		
 	}

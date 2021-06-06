@@ -4,13 +4,56 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 import br.edu.univas.vo.*;
 
 
 public class StartApp {
+	
+	
+	public static void main(String[] args) {
+		Random r = new Random();
+		DecimalFormat df = new DecimalFormat("00");
+//		
+//		int x = r.nextInt(2);
+//		System.out.println(x);
+		
+		Set<Integer> nums = new HashSet<>();
+		for (int i = 0; i < 20; i++) {
+			int num = r.nextInt(26);
+			nums.add(num);
+			System.out.println(df.format(num));
+//			String s = form.format(num);
+		}
+		
+//		for (int i = 0; i < 20; i++) {
+//			int y = 1;
+//			String s = df.format(y);
+//			System.out.println(s);
+//		}
+//		for (int i = 0; i < 16; i++) {			
+//			Integer n = 1 + (int) (Math.random() * 25);
+//			System.out.println(n);
+//		}
+		
+//		Gerando nums aleatórios sem random e usando Colletion.shuffle
+//		for (int i = 0; i < 25; i++) {
+//			jgRandom.add(i);
+//		}
+//	
+//		Collections.shuffle(jgRandom);
+//	
+//		for (int i = 0; i < 20; i++) {
+//			System.out.print(jgRandom.get(i) + ",");
+//		}
+		
+	}
 	
 //	public static void main(String[] args) {
 //		
