@@ -42,38 +42,7 @@ public class StartApp2 {
 		listaQuina = splitQuina(listaQuina, quina);
 		
 		List<Lotofacil> listaLoto = new ArrayList<>();
-		listaLoto = splitLotofacil(listaLoto, lotofacil);
-		
-		List<Integer> ocorrMega = new ArrayList<>();
-		
-		//Copia os dados dos jogos pra uma nova lista
-		for (int i = 0; i < listaMega.size(); i++) {
-			for (int j = 0; j < listaMega.get(i).getLista().size(); j++) {
-				
-				String s = listaMega.get(i).getLista().get(j);
-				int num = Integer.parseInt(s);
-				ocorrMega.add(num);
-//				ocorrMega.add(listaMega.get(i).getLista().get(j));
-			}
-		}
-		
-//		TODO IMPLEMENTAR UM CONTADOR PARA CADA NUMERO E TBM COMO SALVAR O NUMERO COM O COUNTER DELE
-//		Verifica os números iguais
-//		TODO Resolver duplicados
-		List<CountNum> countNum = new ArrayList<>();
-		for(int i = 0; i < ocorrMega.size(); i++) {
-			CountNum cNum = new CountNum();
-			int count = 0;
-			cNum.setNum(ocorrMega.get(i));
-			for (int j = 0; j < ocorrMega.size(); j++) {
-				if(ocorrMega.get(i).equals(ocorrMega.get(j))) {
-					count++;
-				}
-			}
-			cNum.setCount(count);
-			countNum.add(cNum);
-		}
-		
+		listaLoto = splitLotofacil(listaLoto, lotofacil);	
 		
 		int optionMenu;
 		int optionSubMenu;
@@ -86,19 +55,19 @@ public class StartApp2 {
 				vw.imprimeMega();
 				optionSubMenu = apresentaSubMenu(sc, optionMenu, vw);
 				
-				direcionaFluxo(sc, vw, optionMenu, optionSubMenu);
+				direcionaFluxo(sc, vw, listaMega, listaQuina, listaLoto, optionMenu, optionSubMenu);
 			}
 			else if(optionMenu == 2) {
 				vw.imprimeQuina();
 				optionSubMenu = apresentaSubMenu(sc, optionMenu, vw);
 				
-				direcionaFluxo(sc, vw, optionMenu, optionSubMenu);
+				direcionaFluxo(sc, vw, listaMega, listaQuina, listaLoto, optionMenu, optionSubMenu);
 			}
 			else if(optionMenu == 3) {
 				vw.imprimeLoto();
 				optionSubMenu = apresentaSubMenu(sc, optionMenu, vw);
 				
-				direcionaFluxo(sc, vw, optionMenu, optionSubMenu);
+				direcionaFluxo(sc, vw, listaMega, listaQuina, listaLoto, optionMenu, optionSubMenu);
 			}
 			
 			
@@ -108,12 +77,115 @@ public class StartApp2 {
 		
 	}
 
-	private void direcionaFluxo(Scanner sc, View vw, int optionMenu, int optionSubMenu) {
-		if(optionSubMenu == 1) {
+	private void contabilizaNumerosRepetidos(List<Mega> listaMega, List<Quina> listaQuina, List<Lotofacil> listaLoto,
+			int optionMenu, int optionSubMenu) {
+		
+		DecimalFormat df = new DecimalFormat("00");
+		
+		if(optionMenu == 1) { // Tipo de Jogo escolhido: Mega Sena
+			
+			//Copia os dados dos jogos pra uma nova lista
+			List<String> numerosMega = new ArrayList<>();		
+			for (int i = 0; i < listaMega.size(); i++) {
+				for (int j = 0; j < listaMega.get(i).getLista().size(); j++) {
+					numerosMega.add(listaMega.get(i).getLista().get(j));
+				}
+			}
+			
+			List<CountNum> ocorrenciasMega = new ArrayList<>();
+			for (int i = 0; i < 100; i++) {
+				int count = 0;
+				CountNum nums = new CountNum();
+				String s = df.format(i);
+				nums.setNome(s);
+				for (int j = 0; j < numerosMega.size(); j++) {
+					if(s.equals(numerosMega.get(j).toString())) {
+						count++;
+					}				
+				}
+				nums.setCount(count);
+				ocorrenciasMega.add(nums);
+			}
+			
+			Collections.sort(ocorrenciasMega);
+			
+			if(optionSubMenu == 1) { // 5 números qua mais saíram
+				System.out.println("Estes foram os 5 números que mais saíram:");
+				System.out.print("[");
+				for (int i = 0; i < 5; i++) {
+					System.out.print(ocorrenciasMega.get(i).getNome() + " ");
+				}
+				System.out.println("]");
+			}
+			else { // 5 números que menos saíram
+				Collections.reverse(ocorrenciasMega);
+				System.out.println("Estes foram os 5 números que menos saíram:");
+				System.out.print("[");
+				for (int i = 0; i < 5; i++) {
+					System.out.print(ocorrenciasMega.get(i).getNome() + " ");
+				}
+				System.out.println("]");
+			}
+			
 			
 		}
-		else if(optionSubMenu == 2) {
+		else if(optionMenu == 2) { // Tipo de Jogo escolhido: Quina
 			
+//			TODO AJUSTAR OS FOR ABAIXO PARA A QTD DE NUMEROS DE CADA TIPO DE JOGO
+			List<String> numerosQuina = new ArrayList<>();		
+			for (int i = 0; i < listaQuina.size(); i++) {
+				for (int j = 0; j < listaQuina.get(i).getLista().size(); j++) {
+					numerosQuina.add(listaQuina.get(i).getLista().get(j));
+				}
+			}
+			
+			List<CountNum> ocorrenciasQuina = new ArrayList<>();
+			for (int i = 0; i < 100; i++) {
+				int count = 0;
+				CountNum nums = new CountNum();
+				String s = df.format(i);
+				nums.setNome(s);
+				for (int j = 0; j < numerosQuina.size(); j++) {
+					if(s.equals(numerosQuina.get(j).toString())) {
+						count++;
+					}				
+				}
+				nums.setCount(count);
+				ocorrenciasQuina.add(nums);
+			}
+			
+		}
+		else { // Tipo de Jogo escolhido: Lotofacil
+			List<String> numerosLoto = new ArrayList<>();		
+			for (int i = 0; i < listaLoto.size(); i++) {
+				for (int j = 0; j < listaLoto.get(i).getLista().size(); j++) {
+					numerosLoto.add(listaLoto.get(i).getLista().get(j));
+				}
+			}
+			
+			List<CountNum> ocorrenciasLoto = new ArrayList<>();
+			for (int i = 0; i < 100; i++) {
+				int count = 0;
+				CountNum nums = new CountNum();
+				String s = df.format(i);
+				nums.setNome(s);
+				for (int j = 0; j < numerosLoto.size(); j++) {
+					if(s.equals(numerosLoto.get(j).toString())) {
+						count++;
+					}				
+				}
+				nums.setCount(count);
+				ocorrenciasLoto.add(nums);
+			}
+		}		
+	}
+
+	private void direcionaFluxo(Scanner sc, View vw, List<Mega> listaMega, List<Quina> listaQuina, List<Lotofacil> listaLoto, int optionMenu, int optionSubMenu) {
+		if(optionSubMenu == 1) {
+			contabilizaNumerosRepetidos(listaMega, listaQuina, listaLoto, optionMenu, optionSubMenu);
+		}
+		else if(optionSubMenu == 2) {
+			contabilizaNumerosRepetidos(listaMega, listaQuina, listaLoto, optionMenu, optionSubMenu);
 		}
 		else if(optionSubMenu == 3) {
 			

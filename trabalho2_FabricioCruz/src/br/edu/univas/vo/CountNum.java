@@ -1,20 +1,18 @@
 package br.edu.univas.vo;
 
-public class CountNum {
+public class CountNum implements Comparable<CountNum> {
 	
-	private int num;
+	private String nome;
 	private int count;
 	
-	
-	
-	public int getNum() {
-		return num;
+	public String getNome() {
+		return nome;
 	}
-
-	public void setNum(int num) {
-		this.num = num;
+	
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
-
+	
 	public int getCount() {
 		return count;
 	}
@@ -22,5 +20,9 @@ public class CountNum {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	
+
+	@Override
+	public int compareTo(CountNum numComp) {
+		return (numComp.getCount() - this.count);
+	}	
 }
