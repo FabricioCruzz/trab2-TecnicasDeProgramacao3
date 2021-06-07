@@ -69,7 +69,7 @@ public class StartApp {
 //		
 //		List<Lotofacil> loto = fazSplit(lotofacil);
 //		
-////		TODO Procurar saber porque imprime o hashCode ao invés do conteúdo
+////		Procurar saber porque imprime o hashCode ao invés do conteúdo =>>> Problema era no get(i) tinha que dar mais um get
 ////		ArrayList<String[]> loto = fazSplit(lotofacil);
 //		ArrayList<String[]> ms = fazSplit(mega);
 //		ArrayList<String[]> qui = fazSplit(quina);

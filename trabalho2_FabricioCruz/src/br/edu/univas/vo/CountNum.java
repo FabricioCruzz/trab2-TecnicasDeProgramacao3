@@ -20,6 +20,11 @@ public class CountNum implements Comparable<CountNum> {
 	public void setCount(int count) {
 		this.count = count;
 	}
+	
+	@Override
+	public String toString() {
+		return "[" + getNome() + "] ";
+	}
 
 	@Override
 	public int compareTo(CountNum numComp) {
