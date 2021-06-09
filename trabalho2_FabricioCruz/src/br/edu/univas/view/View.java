@@ -2,6 +2,7 @@ package br.edu.univas.view;
 
 public class View {
 
+//	TODO Fazer essa classe static, pra não precisar criar objeto
 	public void mainMenu() {
 		System.out.println("::::Auxiliar de Jogos de Loteria::::\n"
 				+ "Por favor, digite a opção correspondente ao que deseja acessar:\n"

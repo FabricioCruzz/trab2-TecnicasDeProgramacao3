@@ -88,17 +88,35 @@ public class StartApp2 {
 			geraNumsAleatorios(optionMenu);
 		}
 		else if(optionSubMenu == 4) {
-			verificarJogo(sc, vw, optionMenu);
+			verificarJogo(sc, vw, listaMega, listaQuina, listaLoto, optionMenu);
 		}
 		
 	}
 
-	private void verificarJogo(Scanner sc, View vw, int optionMenu) {
+	private void verificarJogo(Scanner sc, View vw, List<Mega> listaMega, List<Quina> listaQuina, List<Lotofacil> listaLoto, int optionMenu) {
 		
-		ArrayList<Integer> jogoUsuario = leituraNumerosUsuario(sc, vw, optionMenu);
+		List<String> jogoUsuario = leituraNumerosUsuario(sc, vw, optionMenu);
+		List<CountNum> listaComAcertos = new ArrayList<>();		
 		
 		if(optionMenu == 1) {
 			
+			for (int i = 0; i < listaMega.size(); i++) {
+				CountNum countNums = new CountNum();
+				int count = 0;
+				for (int j = 0; j < jogoUsuario.size(); j++) {
+					for (int k = 0; k < listaMega.get(i).getLista().size(); k++) {
+						if(jogoUsuario.get(j).equals(listaMega.get(i).getLista().get(k))) {
+							count++;
+						}
+					}
+				}
+				if(count >= 4 && count <= 6) {
+					countNums.setId(listaMega.get(i).getIdJogo());
+					countNums.setCount(count);
+					listaComAcertos.add(countNums);
+					count = 0;
+				}
+			}
 		}
 		else if(optionMenu == 2) {
 			
@@ -106,20 +124,27 @@ public class StartApp2 {
 		else {
 			
 		}
+		
+		for (int i = 0; i < listaComAcertos.size(); i++) {
+			System.out.println("Jogo Nº:" + listaComAcertos.get(i).getId());
+			System.out.println("Números que você acertaria: " + listaComAcertos.get(i).getCount());
+		}
 	}
 
-	private ArrayList<Integer> leituraNumerosUsuario(Scanner sc, View vw, int optionMenu) {
-		ArrayList<Integer> numsUsuario = new ArrayList<>();
-		
+	private ArrayList<String> leituraNumerosUsuario(Scanner sc, View vw, int optionMenu) {
+		ArrayList<String> numsUsuario = new ArrayList<>();
+		DecimalFormat df = new DecimalFormat("00");
 		vw.msgQtsNumsLer();
 		int qtdNumsJogo = readInteger(sc);
 		qtdNumsJogo = validaQtdNumsJogo(sc, vw, qtdNumsJogo, optionMenu);
 		
 		vw.msgLerNumsUsuario();
 		int num;
+		
 		for (int i = 0; i < qtdNumsJogo; i++) {
 			num = readInteger(sc);
-			numsUsuario.add(num);
+			String inputConvert = df.format(num);
+			numsUsuario.add(inputConvert);
 		}
 		return numsUsuario;
 	}
@@ -175,7 +200,7 @@ public class StartApp2 {
 				int count = 0;
 				CountNum nums = new CountNum();
 				String s = df.format(i);
-				nums.setNome(s);
+				nums.setId(s);
 				for (int j = 0; j < numerosMega.size(); j++) {
 					if(s.equals(numerosMega.get(j).toString())) {
 						count++;
@@ -219,7 +244,7 @@ public class StartApp2 {
 				int count = 0;
 				CountNum nums = new CountNum();
 				String s = df.format(i);
-				nums.setNome(s);
+				nums.setId(s);
 				for (int j = 0; j < numerosQuina.size(); j++) {
 					if(s.equals(numerosQuina.get(j).toString())) {
 						count++;
@@ -262,7 +287,7 @@ public class StartApp2 {
 				int count = 0;
 				CountNum nums = new CountNum();
 				String s = df.format(i);
-				nums.setNome(s);
+				nums.setId(s);
 				for (int j = 0; j < numerosLoto.size(); j++) {
 					if(s.equals(numerosLoto.get(j).toString())) {
 						count++;
