@@ -21,6 +21,8 @@ import br.edu.univas.vo.Quina;
 
 public class StartApp2 {
 	
+	private DecimalFormat df = new DecimalFormat("00");
+	
 	public static void main(String[] args) {
 		StartApp2 myApp = new StartApp2();
 		myApp.run();
@@ -120,20 +122,60 @@ public class StartApp2 {
 		}
 		else if(optionMenu == 2) {
 			
+			for (int i = 0; i < listaQuina.size(); i++) {
+				CountNum countNums = new CountNum();
+				int count = 0;
+				for (int j = 0; j < jogoUsuario.size(); j++) {
+					for (int k = 0; k < listaQuina.get(i).getLista().size(); k++) {
+						if(jogoUsuario.get(j).equals(listaQuina.get(i).getLista().get(k))) {
+							count++;
+						}
+					}
+				}
+				if(count >= 2 && count <= 5) {
+					countNums.setId(listaQuina.get(i).getIdJogo());
+					countNums.setCount(count);
+					listaComAcertos.add(countNums);
+					count = 0;
+				}
+			}
+			
 		}
 		else {
 			
+			for (int i = 0; i < listaLoto.size(); i++) {
+				CountNum countNums = new CountNum();
+				int count = 0;
+				for (int j = 0; j < jogoUsuario.size(); j++) {
+					for (int k = 0; k < listaLoto.get(i).getLista().size(); k++) {
+						if(jogoUsuario.get(j).equals(listaLoto.get(i).getLista().get(k))) {
+							count++;
+						}
+					}
+				}
+				if(count >= 11 && count <= 15) {
+					countNums.setId(listaLoto.get(i).getIdJogo());
+					countNums.setCount(count);
+					listaComAcertos.add(countNums);
+					count = 0;
+				}
+			}
+			
+		}
+		
+		if(listaComAcertos.size() == 0) {
+			System.out.println("Você não acertou nenhum número!");
 		}
 		
 		for (int i = 0; i < listaComAcertos.size(); i++) {
 			System.out.println("Jogo Nº:" + listaComAcertos.get(i).getId());
 			System.out.println("Números que você acertaria: " + listaComAcertos.get(i).getCount());
-		}
+		}			
 	}
 
 	private ArrayList<String> leituraNumerosUsuario(Scanner sc, View vw, int optionMenu) {
 		ArrayList<String> numsUsuario = new ArrayList<>();
-		DecimalFormat df = new DecimalFormat("00");
+		
 		vw.msgQtsNumsLer();
 		int qtdNumsJogo = readInteger(sc);
 		qtdNumsJogo = validaQtdNumsJogo(sc, vw, qtdNumsJogo, optionMenu);
@@ -143,10 +185,52 @@ public class StartApp2 {
 		
 		for (int i = 0; i < qtdNumsJogo; i++) {
 			num = readInteger(sc);
+			num = verificaNumsInvalidos(sc, vw, numsUsuario, num, optionMenu);
 			String inputConvert = df.format(num);
 			numsUsuario.add(inputConvert);
 		}
 		return numsUsuario;
+	}
+
+	private int verificaNumsInvalidos(Scanner sc, View vw, ArrayList<String> numsUsuario, int num, int optionMenu) {
+		
+		int limite = 0;
+		
+		if(optionMenu == 1) {
+			limite = 60;
+		}
+		else if(optionMenu == 2) {
+			limite = 80;
+		}
+		else {
+			limite = 25;
+		}
+		
+		boolean validarNumero = (num < 0 || num > limite);
+		while (validarNumero) {
+			vw.msgErroNumInvalido(limite);
+			num = readInteger(sc);
+			validarNumero = (num < 0 || num > limite);
+			if(!validarNumero) {
+				break;
+			}
+		}
+	
+		for (int i = 0; i < numsUsuario.size(); i++) {
+			if(df.format(num).equals(numsUsuario.get(i))) {
+				boolean validarRepetido = df.format(num).equals(numsUsuario.get(i));
+				while(validarRepetido) {
+					vw.msgErroValorRepetido();
+					num = readInteger(sc);
+					validarRepetido = df.format(num).equals(numsUsuario.get(i));
+					if(!validarRepetido) {
+						break;
+					}
+				}
+			}
+		}
+		
+		return num;
 	}
 
 	private int validaQtdNumsJogo(Scanner sc, View vw, int qtdNumsJogo, int optionMenu) {
@@ -180,7 +264,6 @@ public class StartApp2 {
 	private void contabilizaNumerosRepetidos(List<Mega> listaMega, List<Quina> listaQuina, List<Lotofacil> listaLoto, View vw,
 			int optionMenu, int optionSubMenu) {
 		
-		DecimalFormat df = new DecimalFormat("00");
 		int qtd = 5;
 		
 		if(optionMenu == 1) { // Tipo de Jogo escolhido: Mega Sena
@@ -364,7 +447,6 @@ public class StartApp2 {
 		return optionSubMenu;
 	}
 
-	// TODO TENTAR RETORNAR List<Loteria> na assinatura da função e dentro trabalhar com o objeto que extende dessa classe. Talvez funcione!
 	private static List<Lotofacil> splitLotofacil(List<Lotofacil> listaLoto, String jogo) {
 		
 		BufferedReader br = null;

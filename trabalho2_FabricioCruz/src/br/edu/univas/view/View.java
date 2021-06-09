@@ -62,4 +62,14 @@ public class View {
 		System.out.println("Erro! Você deve digitar uma quantidade de números entre " +  limiteInicial + " e " + limiteFinal + "!");
 		System.out.println("Por favor, informe novamente a quantidade:");
 	}
+	
+	public void msgErroNumInvalido(int limite) {
+		System.out.println("Erro! Você deve digitar um valor entre 0 e " + limite + "!");
+		System.out.println("Por favor, informe novamente o valor que deseja:");
+	}
+	
+	public void msgErroValorRepetido() {
+		System.out.println("Erro! Você já digitou este número!");
+		System.out.println("Por favor, digite outro número:");
+	}
 }
