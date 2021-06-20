@@ -7,11 +7,8 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
-import java.util.Set;
 
 import br.edu.univas.view.View;
 import br.edu.univas.vo.CountNum;
@@ -396,35 +393,56 @@ public class AssistenteLoterias {
 	}
 
 	private void geraNumsAleatorios(int optionMenu) {
-		Random random = new Random();
-		Set<Integer> numeros = new HashSet<>();
-		int num;
 		
-		View.msgNumsRandomicos();
+		int qtdNumerosImprimir;
+		int qtdNumerosJogo;
+		
+		List<Integer> listNumbers = new ArrayList<>();
+		
+		View.msgNumsRandomicos();		
 		
 		if(optionMenu == 1) {
-			for (int i = 0; i < 6; i++) {
-				num = random.nextInt(60);
-				numeros.add(num);
-				View.imprimeRandomicos(df.format(num));
-			}		
+			
+			qtdNumerosImprimir = 6;
+			qtdNumerosJogo = 61;
+			criaListaRandomicos(listNumbers, qtdNumerosJogo);
+			
+			imprimeJogoAleatorio(listNumbers, qtdNumerosImprimir);		
 		}
 		else if(optionMenu == 2) {
-			for (int i = 0; i < 15; i++) {
-				num = random.nextInt(80);
-				numeros.add(num);
-				View.imprimeRandomicos(df.format(num));
-			}		
+			qtdNumerosImprimir = 15;
+			qtdNumerosJogo = 81;
+			criaListaRandomicos(listNumbers, qtdNumerosJogo);
+			
+			imprimeJogoAleatorio(listNumbers, qtdNumerosImprimir);		
 		}
-		else {			
-			for (int i = 0; i < 20; i++) {
-				num = random.nextInt(26);
-				numeros.add(num);
-				View.imprimeRandomicos(df.format(num));
-			}			
+		else {
+			
+			qtdNumerosImprimir = 20;
+			qtdNumerosJogo = 27;
+			criaListaRandomicos(listNumbers, qtdNumerosJogo);
+			
+			imprimeJogoAleatorio(listNumbers, qtdNumerosImprimir);
 		}
 		
 		System.out.println();
+	}
+
+	private void imprimeJogoAleatorio(List<Integer> listNumbers, int qtdNumerosImprimir) {
+		
+		for (int i = 0; i < qtdNumerosImprimir; i++) {
+			View.imprimeRandomicos(df.format(listNumbers.get(i)));
+		}	
+		
+	}
+
+	private void criaListaRandomicos(List<Integer> listNumbers, int qtdNumeros) {
+		
+		for (int i = 0; i < qtdNumeros; i++) {
+			listNumbers.add(i);
+		}
+		
+		Collections.shuffle(listNumbers);
 	}
 
 	private int apresentaSubMenu(int optionSubMenu) {
