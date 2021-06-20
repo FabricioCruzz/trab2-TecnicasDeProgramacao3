@@ -46,7 +46,7 @@ public class AssistenteLoterias {
 		do {
 			View.mainMenu();
 			optionMenu = readInteger();
-			validaOpcao(optionMenu);
+			optionMenu = validaOpcao(optionMenu);
 			
 			if(optionMenu == 1) {
 				View.imprimeMega();
@@ -608,12 +608,13 @@ public class AssistenteLoterias {
 		return num;
 	}
 	
-	private void validaOpcao(int optionMenu) {
+	private int validaOpcao(int optionMenu) {
 		if(optionMenu < 1 || (optionMenu > 3 && optionMenu != 9)) {
 			View.valorInvalido();
 			View.mainMenu();
 			optionMenu = readInteger();
 		}
+		return optionMenu;
 		
 	}
 
